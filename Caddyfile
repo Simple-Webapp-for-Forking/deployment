@@ -1,0 +1,15 @@
+# SITE_ADDRESS=":80"            -> nur HTTP (lokal)
+# SITE_ADDRESS="app.example.com" -> automatisches HTTPS via Let's Encrypt
+{$SITE_ADDRESS}
+
+encode gzip
+
+# Alles unter /api geht ans Backend (Pfad bleibt unverändert)
+handle /api/* {
+	reverse_proxy backend:8080
+}
+
+# Alles andere ans Frontend
+handle {
+	reverse_proxy frontend:80
+}

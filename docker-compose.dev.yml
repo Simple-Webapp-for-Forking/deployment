@@ -1,0 +1,25 @@
+# Lokale Entwicklung: baut Frontend & Backend aus den Nachbarordnern
+# statt Images aus der Registry zu ziehen.
+#
+# Erwartete Ordnerstruktur:
+#   projekt/
+#   ├── frontend/
+#   ├── backend/
+#   └── deployment/   <- hier ausführen: make dev
+#
+# Zusätzlich wird die DB auf localhost:5432 freigegeben.
+
+services:
+  frontend:
+    image: local/frontend:dev
+    build:
+      context: ../frontend
+
+  backend:
+    image: local/backend:dev
+    build:
+      context: ../backend
+
+  db:
+    ports:
+      - "5432:5432"
