@@ -4,17 +4,17 @@ COMPOSE_DEV  = docker compose -f docker-compose.yml -f docker-compose.dev.yml
 .PHONY: help env up down pull logs ps dev dev-down clone
 
 help:
-	@echo "make env       - .env aus Vorlage anlegen"
-	@echo "make up        - Produktion starten (Images aus Registry)"
-	@echo "make pull      - neueste Images ziehen und neu starten"
-	@echo "make down      - stoppen"
-	@echo "make logs      - Logs verfolgen"
-	@echo "make dev       - lokal aus ../frontend und ../backend bauen und starten"
-	@echo "make dev-down  - lokale Umgebung stoppen"
-	@echo "make clone     - frontend/backend-Repos neben dieses Repo klonen"
+	@echo "make env       - create .env from template"
+	@echo "make up        - start production (images from registry)"
+	@echo "make pull      - pull latest images and restart"
+	@echo "make down      - stop"
+	@echo "make logs      - follow logs"
+	@echo "make dev       - build from ../frontend and ../backend locally and start"
+	@echo "make dev-down  - stop local environment"
+	@echo "make clone     - clone frontend/backend repos next to this repo"
 
 env:
-	@test -f .env || (cp .env.example .env && echo ".env angelegt – bitte anpassen")
+	@test -f .env || (cp .env.example .env && echo ".env created – please adjust it")
 
 up: env
 	$(COMPOSE) up -d
@@ -39,7 +39,7 @@ dev: env
 dev-down:
 	$(COMPOSE_DEV) down
 
-# Klont die Schwester-Repos derselben Orga (liest den Orga-Namen aus dem git-Remote)
+# Clones the sibling repos of the same org (reads the org name from the git remote)
 clone:
 	@ORG=$$(git remote get-url origin | sed -E 's#.*[:/]([^/]+)/[^/]+(\.git)?$$#\1#'); \
 	for r in frontend backend; do \

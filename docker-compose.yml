@@ -1,5 +1,5 @@
-# Produktions-Setup: zieht fertige Images aus der GitHub Container Registry.
-# Konfiguration in .env (Vorlage: .env.example)
+# Production setup: pulls prebuilt images from the GitHub Container Registry.
+# Configuration in .env (template: .env.example)
 
 services:
   proxy:
@@ -19,7 +19,7 @@ services:
       - backend
 
   frontend:
-    image: ${FRONTEND_IMAGE:?FRONTEND_IMAGE in .env setzen}:${FRONTEND_TAG:-latest}
+    image: ${FRONTEND_IMAGE:?set FRONTEND_IMAGE in .env}:${FRONTEND_TAG:-latest}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:80/"]
@@ -28,7 +28,7 @@ services:
       retries: 3
 
   backend:
-    image: ${BACKEND_IMAGE:?BACKEND_IMAGE in .env setzen}:${BACKEND_TAG:-latest}
+    image: ${BACKEND_IMAGE:?set BACKEND_IMAGE in .env}:${BACKEND_TAG:-latest}
     restart: unless-stopped
     env_file:
       - .env

@@ -1,13 +1,13 @@
-# Lokale Entwicklung: baut Frontend & Backend aus den Nachbarordnern
-# statt Images aus der Registry zu ziehen.
+# Local development: builds frontend & backend from the sibling folders
+# instead of pulling images from the registry.
 #
-# Erwartete Ordnerstruktur:
-#   projekt/
+# Expected folder structure:
+#   project/
 #   ├── frontend/
 #   ├── backend/
-#   └── deployment/   <- hier ausführen: make dev
+#   └── deployment/   <- run here: make dev
 #
-# Zusätzlich wird die DB auf localhost:5432 freigegeben.
+# Additionally, the DB is exposed on localhost:5432.
 
 services:
   frontend:

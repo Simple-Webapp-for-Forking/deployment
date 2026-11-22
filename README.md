@@ -1,55 +1,59 @@
 # Deployment
 
-Startet die komplette Webanwendung mit Docker Compose:
+Runs the complete web application with Docker Compose:
 
 ```
 Browser ──► Caddy (80/443) ──┬── /api/*  ──► backend:8080 ──► postgres
                              └── /*      ──► frontend:80
 ```
 
-## Lokal (Entwicklung)
+## Local (development)
 
 ```bash
-mkdir projekt && cd projekt
-git clone https://github.com/<orga>/deployment.git
+mkdir project && cd project
+git clone https://github.com/<org>/deployment.git
 cd deployment
-make clone      # klont frontend + backend daneben
-make dev        # baut beides lokal und startet alles
+make clone      # clones frontend + backend next to it
+make dev        # builds both locally and starts everything
 ```
 
 → http://localhost
 
-## Server (Produktion)
+## Server (production)
 
-Einmalig auf dem Server (Docker + Compose-Plugin installiert):
+Once on the server (Docker + Compose plugin installed):
 
 ```bash
-git clone https://github.com/<orga>/deployment.git /opt/webapp
+git clone https://github.com/<org>/deployment.git /opt/webapp
 cd /opt/webapp
-make env && nano .env     # Images, Domain, DB-Passwort eintragen
-# Falls die Images privat sind:
-echo <PAT mit read:packages> | docker login ghcr.io -u <user> --password-stdin
+make env && nano .env     # set images, domain, DB password
+# If the images are private:
+echo <PAT with read:packages> | docker login ghcr.io -u <user> --password-stdin
 make up
 ```
 
-Danach läuft alles automatisch über GitHub Actions (siehe `.github/workflows/deploy.yml`).
+After that, everything runs automatically via GitHub Actions (see `.github/workflows/deploy.yml`).
 
-## Automatischer Redeploy nach Frontend/Backend-Push
+## Automatic redeploy after a frontend/backend push
 
-In **frontend** und **backend** jeweils:
-- Variable `DEPLOYMENT_REPO` = `<orga>/deployment`
-- Secret `DEPLOY_DISPATCH_TOKEN` = Fine-grained PAT mit *Contents: read & write* auf das Deployment-Repo
+In **frontend** and **backend** each:
+- Variable `DEPLOYMENT_REPO` = `<org>/deployment`
+- Secret `DEPLOY_DISPATCH_TOKEN` = fine-grained PAT with *Contents: read & write* on the deployment repo
 
-In **deployment**: Variable `DEPLOY_ENABLED` = `true` und Secrets `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`, `DEPLOY_PATH`.
+In **deployment**: variable `DEPLOY_ENABLED` = `true` and secrets `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`, `DEPLOY_PATH`.
 
-Ablauf: Push auf `main` → Image wird gebaut → Deployment-Repo wird angestoßen → Server zieht neues Image.
+Flow: push to `main` → image gets built → deployment repo is triggered → server pulls the new image.
 
-## Befehle
+## Commands
 
-| Befehl | Wirkung |
+| Command | Effect |
 |---|---|
-| `make up` | Produktion starten |
-| `make pull` | neue Images ziehen + neu starten |
-| `make dev` | lokal bauen + starten |
-| `make logs` | Logs |
-| `make down` | stoppen |
+| `make up` | start production |
+| `make pull` | pull new images + restart |
+| `make dev` | build locally + start |
+| `make logs` | logs |
+| `make down` | stop |
+
+---
+
+This template was built with the help of [Claude](https://claude.ai) by Anthropic.
